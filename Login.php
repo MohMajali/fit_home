@@ -15,7 +15,7 @@ if (isset($_POST['Submit'])) {
         $row = mysqli_fetch_array($query);
 
         $id = $row['id'];
-        $type_id = $row['type_id'];
+        $type_id = $row['user_type_id'];
 
         if ($type_id == 1) {
 
@@ -24,14 +24,6 @@ if (isset($_POST['Submit'])) {
             echo '<script language="JavaScript">
           document.location="Admin_Dashboard/";
           </script>';
-
-        } else if ($type_id == 2) {
-
-            $_SESSION['C_Log'] = $id;
-
-            echo '<script language="JavaScript">
-            document.location="Site/";
-            </script>';
 
         }
 
@@ -50,7 +42,7 @@ if (isset($_POST['Submit'])) {
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <title>Login Page</title>
+    <title> AdminLogin Page</title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
 

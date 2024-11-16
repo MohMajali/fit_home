@@ -150,7 +150,7 @@ if (!$A_ID) {
                   </thead>
                   <tbody>
                   <?php
-$sql1 = mysqli_query($con, "SELECT * from nutrition_centers WHERE status = 'Accepted' ORDER BY id DESC");
+$sql1 = mysqli_query($con, "SELECT * from nutrition_centers WHERE status = 'Pending' ORDER BY id DESC");
 
 while ($row1 = mysqli_fetch_array($sql1)) {
 
@@ -175,16 +175,9 @@ while ($row1 = mysqli_fetch_array($sql1)) {
               <div class="d-flex flex-column">
               <div class="d-flex mb-2">
 
+              <a href="./AcceptOrRejectCenter.php?center_id=<?php echo $center_id ?>&status=Accepted" class="btn btn-success me-3">Accept</a>
+              <a href="./AcceptOrRejectCenter.php?center_id=<?php echo $center_id ?>&status=Rejected" class="btn btn-danger">Reject</a>
 
-                        <?php if ($active == 1) {?>
-
-<a href="./DeleteOrRestoreCenter.php?center_id=<?php echo $center_id ?>&isActive=<?php echo 0 ?>" class="btn btn-danger">Delete</a>
-
-<?php } else {?>
-
-  <a href="./DeleteOrRestoreCenter.php?center_id=<?php echo $center_id ?>&isActive=<?php echo 1 ?>" class="btn btn-primary">Restore</a>
-
-<?php }?>
                         </div>
 
 

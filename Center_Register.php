@@ -18,19 +18,19 @@ if (isset($_POST['Submit'])) {
 
     if ($subscription_type == 1) {
 
-        $end_date = date('d-m-Y', strtotime($start_date . ' +90 days'));
+        $end_date = date('Y-m-d', strtotime($start_date . ' +90 days'));
         $subscription_type = "3 Months Open Contract (First Time Only) (For Free)";
         $price = 0;
 
     } else if ($subscription_type == 2) {
 
-        $end_date = date('d-m-Y', strtotime($start_date . ' +180 days'));
+        $end_date = date('Y-m-d', strtotime($start_date . ' +180 days'));
         $subscription_type = "6 Months Contract (300 JOD)";
         $price = 300;
 
     } else if ($subscription_type == 3) {
 
-        $end_date = date('d-m-Y', strtotime($start_date . ' +360 days'));
+        $end_date = date('Y-m-d', strtotime($start_date . ' +360 days'));
         $subscription_type = "12 Months COntract (600 JOD)";
         $price = 600;
 
@@ -247,6 +247,7 @@ if (isset($_POST['Submit'])) {
                           >Select Contract Type</label
                         >
                         <select name="subscription_type" class="form-select" id="subscription_type" required>
+                        <option value="" disabled selected>Please Select Contract Type</option>
                             <option value="1">3 Months Open Contract (First Time Only) (For Free)</option>
                             <option value="2">6 Months Contract (300 JOD)</option>
                             <option value="3">12 Months COntract (600 JOD)</option>

@@ -134,7 +134,7 @@ if (!$A_ID) {
               <div class="card-body">
                 <h5 class="card-title">WELCOMEING ADMING</h5>
 
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolorum amet quod impedit voluptate esse cum dignissimos ad. Assumenda earum commodi vel libero, maiores, illum blanditiis dignissimos quas, dolore sunt sequi.
+                sdsadsdsadssadjhb  cum dignissimos ad. Assumenda earum commodi vel libero, maiores, illum blanditiis dignissimos quas, dolore sunt sequi.
 
               </div>
             </div>

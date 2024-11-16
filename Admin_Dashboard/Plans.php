@@ -168,7 +168,7 @@ if (!$A_ID) {
             data-bs-toggle="modal"
             data-bs-target="#verticalycentered"
           >
-            Add New Level
+            Add New Plan
           </button>
         </div>
 
