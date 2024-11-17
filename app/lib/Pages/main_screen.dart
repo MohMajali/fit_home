@@ -1,6 +1,4 @@
-import 'package:electric_scooters/Pages/Account/account.dart';
-import 'package:electric_scooters/Pages/home_page.dart';
-import 'package:electric_scooters/Pages/reservations.dart';
+import 'package:app/Pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
@@ -16,8 +14,8 @@ class _MainScreenState extends State<MainScreen> {
 
   List screens = [
     const HomePage(),
-    const ReservationsScreen(),
-    const AccountPage()
+    // const ReservationsScreen(),
+    // const AccountPage()
   ];
   @override
   Widget build(BuildContext context) {

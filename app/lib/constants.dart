@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-const URL = 'http://10.0.2.2/Electric_Scooters_1/apis';
+const URL = 'http://10.0.2.2/fit_home/APIs';
 
 const assetImages = 'assets/images/';
 
@@ -112,7 +112,7 @@ Padding phoneInput(TextEditingController phoneCont) {
           controller: phoneCont,
           validator: (phone) {
             if (phone!.isEmpty) {
-              return 'Please fill';
+              return 'Phone field required';
             } else if (phone.length > 10 || phone.length < 10) {
               return "Phone Number Must Be 10 Digits Only";
             }

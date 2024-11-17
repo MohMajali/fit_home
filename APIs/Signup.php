@@ -19,6 +19,7 @@ if (AllParametersAreNotNull(array('name', 'email', 'phone', 'user_name', 'passwo
     $start_date = $_POST['start_date'];
     $end_date = '';
     $price = '';
+    $type = 2;
 
     if ($subscription_type == 1) {
 
@@ -53,27 +54,39 @@ if (AllParametersAreNotNull(array('name', 'email', 'phone', 'user_name', 'passwo
 
     } else {
 
-        $stmt = $con->prepare("INSERT INTO users (name, email, phone ,user_name, password, tall, weight) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssss", $name, $email, $phone, $user_name, $password, $tall, $weight);
+        // print_r($subscription_type . '===> ');
+        // print_r($price . '===> ');
+        // die;
+
+        $stmt = $con->prepare("INSERT INTO users (name, email, phone ,user_name, password, tall, weight, user_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssssi", $name, $email, $phone, $user_name, $password, $tall, $weight, $type);
 
         if ($stmt->execute()) {
 
             $stmt = $con->prepare("SELECT id FROM users WHERE email = ?");
             $stmt->bind_param("s", $email);
             $stmt->execute();
-            $stmt->bind_result($id);
-            $stmt->fetch();
+            $stmt->store_result();
 
-            $stmt = $con->prepare("INSERT INTO user_subscription (user_id, subscription_type, start_date ,end_date, price) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssss", $id, $subscription_type, $start_date, $end_date, $price);
+            if ($stmt->num_rows > 0) {
 
-            if ($stmt->execute()) {
+                $stmt->bind_result($id);
+                $stmt->fetch();
 
-                $stmt->close();
+                $stmt2 = $con->prepare("INSERT INTO user_subscription (user_id, subscription_type, start_date, end_date, price) VALUES (?, ?, ?, ?, ?)");
+                $stmt2->bind_param("isssd", $id, $subscription_type, $start_date, $end_date, $price);
 
-                $response['error'] = false;
-                $response['message'] = 'User registered successfully';
+                if ($stmt2->execute()) {
 
+                    $response['error'] = false;
+                    $response['message'] = 'User registered successfully';
+
+                } else {
+
+                    $response['error'] = true;
+                    $response['message'] = $con->error;
+                    $response['message2'] = $stmt2->error;
+                }
             }
         }
     }

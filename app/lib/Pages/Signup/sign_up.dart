@@ -1,4 +1,4 @@
-import 'package:electric_scooters/Pages/Signup/Body/body.dart';
+import 'package:app/Pages/Signup/Body/body.dart';
 import 'package:flutter/material.dart';
 
 class SignupScreen extends StatefulWidget {

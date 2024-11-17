@@ -1,4 +1,4 @@
-package com.example.electric_scooters
+package com.example.app
 
 import io.flutter.embedding.android.FlutterActivity
 

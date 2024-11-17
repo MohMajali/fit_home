@@ -1,6 +1,6 @@
 {
-    "name": "electric_scooters",
-    "short_name": "electric_scooters",
+    "name": "app",
+    "short_name": "app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

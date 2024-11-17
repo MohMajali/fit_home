@@ -1,12 +1,14 @@
+import 'package:app/Pages/Login/login_page.dart';
+import 'package:app/Pages/main_screen.dart';
 import 'package:device_preview/device_preview.dart';
-import 'package:electric_scooters/Pages/main_screen.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:electric_scooters/Pages/Login/login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 SharedPreferences? prefs;
-void main() async {
+
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   prefs = await SharedPreferences.getInstance();
   runApp(DevicePreview(
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         builder: DevicePreview.appBuilder,
         locale: DevicePreview.locale(context),
-        title: 'Electric Scooters',
+        title: 'Fit AT Home',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorSchemeSeed: const Color(0xff5a73d8),
@@ -38,3 +40,5 @@ class MyApp extends StatelessWidget {
             : const MainScreen());
   }
 }
+
+

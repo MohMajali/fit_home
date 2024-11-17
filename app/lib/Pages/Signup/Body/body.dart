@@ -1,47 +1,101 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:app/constants.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
-import 'package:electric_scooters/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_awesome_alert_box/flutter_awesome_alert_box.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   Body({super.key});
 
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController nameCont = TextEditingController();
-  TextEditingController nationalIdCont = TextEditingController();
-  TextEditingController passCont = TextEditingController();
-  TextEditingController phoneCont = TextEditingController();
+
   TextEditingController emailCont = TextEditingController();
-  TextEditingController universityIdCont = TextEditingController();
+
+  TextEditingController passCont = TextEditingController();
+
+  TextEditingController phoneCont = TextEditingController();
+
+  TextEditingController userNameCont = TextEditingController();
+
   TextEditingController passConfirmCont = TextEditingController();
+
+  TextEditingController tallHeightCont = TextEditingController();
+
+  TextEditingController weightCont = TextEditingController();
+
+  final TextEditingController subCont = TextEditingController();
+
+  final TextEditingController dateCont = TextEditingController();
+
+  String selectedSub = '';
 
   bool visiblePass = true;
 
-  Future signup(String nationalId, String password, String name,
-      String universityId, String phone, BuildContext context) async {
+  List subscriptions = [
+    {"id": "1", "label": "3 Months Open Contract (First Time Only) (For Free)"},
+    {"id": "2", "label": "6 Months Contract (300 JOD)"},
+    {"id": "3", "label": "12 Months COntract (600 JOD)"}
+  ];
+
+  DateTime selectedDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        dateCont.text = picked.toString().split(' ')[0];
+      });
+    }
+  }
+
+  Future signup(
+      BuildContext context,
+      String name,
+      String email,
+      String phone,
+      String userName,
+      String password,
+      String tall,
+      String weight,
+      String subscriptionType,
+      String startDate) async {
     try {
-      var response = await http.post(Uri.parse('$URL/signup.php'), body: {
-        'national_id': nationalId,
-        'password': password,
+      var response = await http.post(Uri.parse('$URL/Signup.php'), body: {
         'name': name,
+        'email': email,
         'phone': phone,
-        'university_id': universityId
+        'user_name': userName,
+        'password': password,
+        'tall': tall,
+        'weight': weight,
+        'subscription_type': subscriptionType,
+        'start_date': startDate,
       });
 
       var userResponse = json.decode(response.body);
-
       if (!userResponse['error']) {
         Navigator.pop(context);
       } else {
         DangerAlertBox(
             title: "Stop",
             context: context,
-            messageText: "User With This National ID Already Registered",
+            messageText: "User With This Email Already Registered",
             buttonColor: darkBlue,
             icon: Icons.cancel,
             titleTextColor: darkBlue);
@@ -61,9 +115,13 @@ class Body extends StatelessWidget {
           key: _formKey,
           child: Column(children: [
             nameInput(nameCont),
-            nationalIdInput(),
-            universityIdInput(),
+            emailInput(),
             phoneInput(phoneCont),
+            userNameInput(),
+            tallInput(),
+            weightInput(),
+            subscriptionTypeInput(),
+            dateInput(),
             passwordInput(passCont),
             confirmPasswordInput(passConfirmCont),
             button(
@@ -71,61 +129,173 @@ class Body extends StatelessWidget {
                 press: () async {
                   if (_formKey.currentState!.validate()) {
                     await signup(
-                        nationalIdCont.text,
-                        passCont.text,
+                        context,
                         nameCont.text,
-                        universityIdCont.text,
+                        emailCont.text,
                         phoneCont.text,
-                        context);
+                        userNameCont.text,
+                        passCont.text,
+                        tallHeightCont.text,
+                        weightCont.text,
+                        selectedSub,
+                        dateCont.text);
                   }
                 })
           ]))
     ]));
   }
 
-  Padding universityIdInput() {
+  Padding subscriptionTypeInput() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+      child: DropdownMenu(
+        width: MediaQuery.of(context).size.width * 0.92,
+        initialSelection: selectedSub,
+        controller: subCont,
+        requestFocusOnTap: true,
+        label: const Text("Subscription Type",
+            style: TextStyle(color: Colors.blue, fontSize: 20)),
+        enableFilter: false,
+        enableSearch: false,
+        textStyle: const TextStyle(color: Colors.blue, fontSize: 20),
+        inputDecorationTheme: InputDecorationTheme(
+          hintStyle: const TextStyle(fontSize: 20, color: Colors.blue),
+          errorMaxLines: 3,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          contentPadding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(100.0),
+            borderSide: const BorderSide(color: Colors.blue),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(100.0),
+            borderSide: const BorderSide(color: Colors.blue),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(100.0),
+            borderSide: const BorderSide(color: Colors.red, width: 2.0),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(100.0),
+            borderSide: const BorderSide(color: Colors.red, width: 2.0),
+          ),
+        ),
+        dropdownMenuEntries: subscriptions
+            .map<DropdownMenuEntry>((e) => DropdownMenuEntry(
+                  value: e['id'],
+                  label: e['label'],
+                ))
+            .toList(),
+        onSelected: (value) {
+          setState(() {
+            selectedSub = value;
+          });
+        },
+      ),
+    );
+  }
+
+  Padding dateInput() {
     return Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
         child: TextFormField(
-            keyboardType: TextInputType.number,
-            controller: universityIdCont,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
-            ],
-            validator: (universityId) {
-              if (universityId!.isEmpty) {
-                return 'Please fill';
-              } else if (universityId.length > 10 || universityId.length < 10) {
-                return "University ID Must Be 10 Digits Only";
+            keyboardType: TextInputType.datetime,
+            controller: dateCont,
+            onTap: () => _selectDate(context),
+            validator: (date) {
+              if (date!.isEmpty) {
+                return 'Start Date field required';
               }
               return null;
             },
             decoration: decoration(
-                labelText: 'University ID',
-                hintText: 'University ID',
+                labelText: 'Start Date',
+                hintText: 'Start Date',
+                icon: const Icon(Icons.phone, color: Colors.blue))));
+  }
+
+  Padding tallInput() {
+    return Padding(
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+        child: TextFormField(
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+            ],
+            controller: tallHeightCont,
+            validator: (tall) {
+              if (tall!.isEmpty) {
+                return 'Tall field required';
+              }
+              return null;
+            },
+            decoration: decoration(
+                labelText: 'Tall height',
+                hintText: 'Tall height',
+                icon: const Icon(Icons.phone, color: Colors.blue))));
+  }
+
+  Padding weightInput() {
+    return Padding(
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+        child: TextFormField(
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+            ],
+            controller: weightCont,
+            validator: (tall) {
+              if (tall!.isEmpty) {
+                return 'Weight field required';
+              }
+              return null;
+            },
+            decoration: decoration(
+                labelText: 'Weight',
+                hintText: 'Weight',
+                icon: const Icon(Icons.phone, color: Colors.blue))));
+  }
+
+  Padding userNameInput() {
+    return Padding(
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+        child: TextFormField(
+            keyboardType: TextInputType.text,
+            controller: userNameCont,
+            validator: (userName) {
+              if (userName!.isEmpty) {
+                return 'Username field required';
+              }
+              return null;
+            },
+            decoration: decoration(
+                labelText: 'User Name',
+                hintText: 'User Name',
                 icon: const Icon(Icons.book, color: Colors.blue))));
   }
 
-  Padding nationalIdInput() {
+  Padding emailInput() {
     return Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
         child: TextFormField(
-            keyboardType: TextInputType.number,
-            controller: nationalIdCont,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
-            ],
-            validator: (national) {
-              if (national!.isNotEmpty) {
-                if (national.length > 10 || national.length < 10) {
-                  return "National ID Must Be 10 Digits Only";
-                }
+            keyboardType: TextInputType.emailAddress,
+            controller: emailCont,
+            // inputFormatters: [
+            //   FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+            // ],
+            validator: (email) {
+              if (email!.isEmpty) {
+                return "Email field required";
+              }
+
+              if (!email.contains('@')) {
+                return 'Please write correct email';
               }
               return null;
             },
             decoration: decoration(
-                labelText: 'National ID',
-                hintText: 'National ID',
+                labelText: 'Email',
+                hintText: 'Email',
                 icon: const Icon(Icons.numbers, color: Colors.blue))));
   }
 
@@ -145,8 +315,8 @@ class Body extends StatelessWidget {
               return null;
             },
             decoration: decoration(
-                labelText: 'Password',
-                hintText: 'Password',
+                labelText: 'Confirm Password',
+                hintText: 'Confirm Password',
                 icon: const Icon(Icons.lock, color: Colors.blue))));
   }
 }

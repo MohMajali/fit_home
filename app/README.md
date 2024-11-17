@@ -1,4 +1,4 @@
-# electric_scooters
+# app
 
 A new Flutter project.
 
