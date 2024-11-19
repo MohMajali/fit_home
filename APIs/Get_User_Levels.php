@@ -33,10 +33,10 @@ while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 
     while ($row2 = $result2->fetch_array(MYSQLI_ASSOC)) {
 
-        $levelId = $row['id'];
+        $levelId = $row2['id'];
 
         $data = [
-            'id' => $row['id'],
+            'id' => $row2['id'],
             'level_name' => $row2['name'],
             'plans' => [],
         ];
@@ -77,8 +77,7 @@ while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 
 }
 
-$response['error'] = false;
-$response['levels'] = $levels;
+$response = $levels;
 
 $stmt->close();
 

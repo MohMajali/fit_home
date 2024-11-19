@@ -10,7 +10,10 @@ if (AllParametersAreNotNull(array('user_id', 'center_id', 'appointment_date'))) 
 
     $user_id = $_POST['user_id'];
     $center_id = $_POST['center_id'];
-    $appointment_date = date('Y-m-d', strtotime($_POST['appointment_date']));
+    //date('Y-m-d', strtotime($_POST['appointment_date']))
+    $appointment_date = substr($_POST['appointment_date'], 0, 19);
+    $appointment_date = new DateTime($appointment_date);
+    $appointment_date = $appointment_date->format('Y-m-d H:i:s');
 
     $stmt = $con->prepare("SELECT id FROM appointmentes WHERE user_id = ? AND center_id = ? AND appointment_date = ?");
     $stmt->bind_param("iis", $user_id, $center_id, $appointment_date);
