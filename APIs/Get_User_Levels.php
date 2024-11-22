@@ -4,7 +4,6 @@ require_once '../Connect.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
-
 $response = array();
 
 $userId = $_GET['user_id'];
@@ -17,7 +16,6 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 $levels = array();
-
 
 while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 
@@ -64,8 +62,9 @@ while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 
                 $data['plans'][] = [
                     'id' => $row3['id'],
+                    'user_plan_id' => $row4['id'],
                     'name' => $row3['name'],
-                    'image' => $row3['image'],
+                    'image' => 'http://10.0.2.2/fit_home/Admin_Dashboard/' . $row3['image'],
                     'description' => $row3['description'],
                     'is_done' => boolval($row4['is_done']),
                 ];

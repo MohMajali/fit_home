@@ -37,7 +37,7 @@ while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
             'center_name' => $row2['name'],
             'appointment_date' => $row['appointment_date'],
             'status' => $row['status'],
-            'image' => $row2['image'],
+            'image' => 'http://10.0.2.2/fit_home/Center_Dashboard/' . $row2['image'],
         ];
 
     }
@@ -46,8 +46,7 @@ while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 
 }
 
-$response['error'] = false;
-$response['appointements'] = $appointements;
+$response = $appointements;
 
 $stmt->close();
 

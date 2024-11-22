@@ -46,6 +46,7 @@ class LevelModel {
 
 class Plan {
     final int id;
+    final int userPlanId;
     final String name;
     final String image;
     final String description;
@@ -53,6 +54,7 @@ class Plan {
 
     Plan({
         required this.id,
+        required this.userPlanId,
         required this.name,
         required this.image,
         required this.description,
@@ -61,6 +63,7 @@ class Plan {
 
     Plan copyWith({
         int? id,
+        int? userPlanId,
         String? name,
         String? image,
         String? description,
@@ -68,6 +71,7 @@ class Plan {
     }) => 
         Plan(
             id: id ?? this.id,
+            userPlanId: userPlanId ?? this.userPlanId,
             name: name ?? this.name,
             image: image ?? this.image,
             description: description ?? this.description,
@@ -76,6 +80,7 @@ class Plan {
 
     factory Plan.fromJson(Map<String, dynamic> json) => Plan(
         id: json["id"],
+        userPlanId: json['user_plan_id'],
         name: json["name"],
         image: json["image"],
         description: json["description"],

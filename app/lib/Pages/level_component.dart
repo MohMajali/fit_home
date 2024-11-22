@@ -1,4 +1,5 @@
 import 'package:app/Models/level_model.dart';
+import 'package:app/Pages/plans.dart';
 import 'package:flutter/material.dart';
 
 class LevelComponent extends StatelessWidget {
@@ -11,10 +12,16 @@ class LevelComponent extends StatelessWidget {
       children: List.generate(
           levels.length,
           (index) => InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PlansScreen(
+                              levelId: levels[index].id)));
+                },
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 18),
-                  child: Row(
+                  child: Column(
                     children: [
                       Container(
                         width: 100,
@@ -22,9 +29,8 @@ class LevelComponent extends StatelessWidget {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             image: const DecorationImage(
-                                image: NetworkImage(
-                                    "https://www.searchenginejournal.com/wp-content/uploads/2021/01/category-pages-featured-image-5ffbf8cca689f-1280x720.png"),
-                                fit: BoxFit.cover)),
+                                image: AssetImage("assets/image/levels.png"),
+                                fit: BoxFit.contain)),
                       ),
                       const SizedBox(width: 10),
                       Column(
