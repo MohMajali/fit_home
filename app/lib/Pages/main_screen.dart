@@ -1,3 +1,4 @@
+import 'package:app/Pages/Account.dart';
 import 'package:app/Pages/appointements.dart';
 import 'package:app/Pages/home_page.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class _MainScreenState extends State<MainScreen> {
   List screens = [
     const HomePage(),
     const AppointementsScreen(),
-    // const AccountPage()
+    const AccountPage()
   ];
   @override
   Widget build(BuildContext context) {

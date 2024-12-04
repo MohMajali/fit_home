@@ -11,20 +11,21 @@ $active = 1;
 
 $stmt = $con->prepare("SELECT id, category_id FROM user_categories WHERE user_id = ?");
 $stmt->bind_param("i", $userId);
+
+
 $stmt->execute();
 
-$result = $stmt->get_result();
+$stmt->store_result();
 
 $levels = array();
 
-while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+if ($stmt->num_rows > 0) {
 
-    $data = [];
+    $stmt->bind_result($id, $category_id);
+    $stmt->fetch();
 
-    $categoryId = $row['category_id'];
-
-    $stmt2 = $con->prepare("SELECT id, name FROM levels WHERE category_id = ? AND active = ?");
-    $stmt2->bind_param("ii", $categoryId, $active);
+    $stmt2 = $con->prepare("SELECT id, name FROM levels WHERE category_id = ? AND active = ? ORDER BY id DESC");
+    $stmt2->bind_param("ii", $category_id, $active);
     $stmt2->execute();
 
     $result2 = $stmt2->get_result();
@@ -48,8 +49,7 @@ while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
         while ($row3 = $result3->fetch_array(MYSQLI_ASSOC)) {
 
             $planId = $row3['id'];
-// print_r($planId);
-// die;
+
             $stmt4 = $con->prepare("SELECT id, is_done FROM user_plans WHERE plan_id = ?");
             $stmt4->bind_param("i", $planId);
             $stmt4->execute();
@@ -69,11 +69,10 @@ while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
                     'is_done' => boolval($row4['is_done']),
                 ];
             }
+
         }
+        $levels[] = $data;
     }
-
-    $levels[] = $data;
-
 }
 
 $response = $levels;

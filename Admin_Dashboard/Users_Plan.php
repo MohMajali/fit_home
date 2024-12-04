@@ -145,7 +145,6 @@ if (!$A_ID) {
                       <th scope="col">User Name</th>
                       <th scope="col">Is Done</th>
                       <th scope="col">Created At</th>
-                      <th scope="col">Actions</th>
                     </tr>
                   </thead>
                   <tbody>

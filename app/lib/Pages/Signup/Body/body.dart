@@ -117,12 +117,12 @@ class _BodyState extends State<Body> {
             nameInput(nameCont),
             emailInput(),
             phoneInput(phoneCont),
-            userNameInput(),
+            userNameInput(userNameCont),
             tallInput(),
             weightInput(),
             subscriptionTypeInput(),
             dateInput(),
-            passwordInput(passCont),
+            passwordInput(passCont, false),
             confirmPasswordInput(passConfirmCont),
             button(
                 text: "Sign Up",
@@ -256,23 +256,7 @@ class _BodyState extends State<Body> {
                 icon: const Icon(Icons.phone, color: Colors.blue))));
   }
 
-  Padding userNameInput() {
-    return Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-        child: TextFormField(
-            keyboardType: TextInputType.text,
-            controller: userNameCont,
-            validator: (userName) {
-              if (userName!.isEmpty) {
-                return 'Username field required';
-              }
-              return null;
-            },
-            decoration: decoration(
-                labelText: 'User Name',
-                hintText: 'User Name',
-                icon: const Icon(Icons.book, color: Colors.blue))));
-  }
+
 
   Padding emailInput() {
     return Padding(

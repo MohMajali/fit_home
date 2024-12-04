@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 class CenterScreen extends StatefulWidget {
   final int centerId, userId;
-  final String name, image, description, phone, email;
+  final String name, image, description, phone, email, userName;
   const CenterScreen(
       {super.key,
       required this.centerId,
@@ -17,7 +17,8 @@ class CenterScreen extends StatefulWidget {
       required this.email,
       required this.phone,
       required this.image,
-      required this.description});
+      required this.description,
+      required this.userName});
 
   @override
   State<CenterScreen> createState() => _CenterState();

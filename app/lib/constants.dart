@@ -137,8 +137,8 @@ Padding emailInput(TextEditingController emailCont) {
             return null;
           },
           decoration: decoration(
-              labelText: '',
-              hintText: 'Enter You email',
+              labelText: 'Email',
+              hintText: 'Email',
               icon: const Icon(Icons.email, color: Colors.blue))));
 }
 
@@ -163,7 +163,25 @@ Padding nameInput(TextEditingController nameCont) {
               icon: const Icon(Icons.person, color: Colors.blue))));
 }
 
-Padding passwordInput(TextEditingController passCont) {
+Padding userNameInput(userNameCont) {
+  return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+      child: TextFormField(
+          keyboardType: TextInputType.text,
+          controller: userNameCont,
+          validator: (userName) {
+            if (userName!.isEmpty) {
+              return 'Username field required';
+            }
+            return null;
+          },
+          decoration: decoration(
+              labelText: 'User Name',
+              hintText: 'User Name',
+              icon: const Icon(Icons.book, color: Colors.blue))));
+}
+
+Padding passwordInput(TextEditingController passCont, bool isUpdateAccount) {
   return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
       child: TextFormField(
@@ -173,10 +191,19 @@ Padding passwordInput(TextEditingController passCont) {
           validator: (pass) {
             RegExp regex = RegExp(
                 r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-            if (pass!.isEmpty) {
-              return 'Please fill';
-            } else if (!regex.hasMatch(pass)) {
-              return ("Password should contain upper,lower,digit and Special character ");
+
+            if (isUpdateAccount) {
+              if (pass!.isNotEmpty) {
+                if (!regex.hasMatch(pass)) {
+                  return ("Password should contain upper,lower,digit and Special character ");
+                }
+              }
+            } else {
+              if (pass!.isEmpty) {
+                return 'Please fill';
+              } else if (!regex.hasMatch(pass)) {
+                return ("Password should contain upper,lower,digit and Special character ");
+              }
             }
             return null;
           },

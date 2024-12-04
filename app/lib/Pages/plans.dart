@@ -10,7 +10,8 @@ import 'package:http/http.dart' as http;
 
 class PlansScreen extends StatefulWidget {
   int levelId;
-  PlansScreen({super.key, required this.levelId});
+  String userName;
+  PlansScreen({super.key, required this.levelId, required this.userName});
 
   @override
   State<PlansScreen> createState() => _PlansScreenState();
@@ -51,11 +52,10 @@ class _PlansScreenState extends State<PlansScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Hi "),
-                ]),
+            title:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text("Hi ${widget.userName}"),
+            ]),
             actions: [
               IconButton(
                   onPressed: () {},

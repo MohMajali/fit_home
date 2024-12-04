@@ -132,6 +132,8 @@ if (!$C_ID) {
       <!-- End Page Title -->
       <section class="section">
 
+
+
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
@@ -187,6 +189,7 @@ while ($row1 = mysqli_fetch_array($sql1)) {
                       <?php } else {?>
 
                         <a href="./Meals.php?user_id=<?php echo $user_id ?>" class="btn btn-success">Meals</a>
+                        <a href="./Plans.php?user_id=<?php echo $user_id ?>" class="btn btn-primary">Plans</a>
                       <?php } ?>
                       </th>
                     </tr>

@@ -1,85 +1,48 @@
-import 'dart:convert';
 import 'dart:developer';
 
-import 'package:app/Models/appointement.dart';
-import 'package:app/Models/user_model.dart';
+import 'package:app/Models/meal_model.dart';
+import 'package:app/Pages/meal_details.dart';
 import 'package:app/constants.dart';
 import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:http/http.dart' as http;
 
-class AppointementsScreen extends StatefulWidget {
-  const AppointementsScreen({super.key});
+class MealsPage extends StatefulWidget {
+  String categoryName, userName;
+  MealsPage({super.key, required this.categoryName, required this.userName});
 
   @override
-  State<AppointementsScreen> createState() => _AppointementsScreenState();
+  State<MealsPage> createState() => _MealsPageState();
 }
 
-class _AppointementsScreenState extends State<AppointementsScreen> {
-  List<AppointmentModel> appointements = [];
+class _MealsPageState extends State<MealsPage> {
+  List<MealModel> meals = [];
 
-  UserModel userModel = UserModel(
-      error: false,
-      message: "",
-      user: User(id: 0, name: "", email: "", phone: "", userName: ""));
-
-  Future getUser() async {
-    try {
-      var response = await http.get(
-        Uri.parse('$URL/Get_User_Data.php?user_id=${prefs?.getInt('userId')}'),
-      );
-
-      var userResponse = json.decode(response.body);
-      if (!userResponse['error']) {
-        UserModel.fromJson(userResponse);
-      } else {
-        log("message");
-      }
-      return userResponse;
-    } catch (err) {
-      log('getUser FUNCTION ===> $err');
-    }
-  }
-
-  Future<List<AppointmentModel>> getAppointements() async {
+  Future<List<MealModel>> getMeals() async {
     try {
       var response = await http.get(
         Uri.parse(
-            "$URL/Get_Appointements.php?user_id=${prefs?.getInt('userId')}"),
+            '$URL/Get_User_Meals.php?user_id=${prefs?.getInt('userId')}&category_name=${widget.categoryName}'),
       );
 
       // var scootersResponse = json.decode(response.body);
-      List<AppointmentModel> appointementsList = [];
+      List<MealModel> mealsList = [];
 
-      appointementsList = appointmentModelFromJson(response.body);
+      mealsList = mealModelFromJson(response.body);
 
-      return appointementsList;
+      return mealsList;
     } catch (err) {
-      log('getAppointemnts FUNCTION ===> $err');
+      log('getMeals FUNCTION ===> $err');
       return [];
     }
   }
 
   @override
   void initState() {
-    getAppointements().then((value) => setState(() {
-          appointements = value;
+    getMeals().then((value) => setState(() {
+          meals = value;
         }));
-
-    getUser().then((value) => {
-          setState(() {
-            userModel = UserModel(
-                error: false,
-                message: "",
-                user: User(
-                    id: value['user']['id'],
-                    name: value['user']['name'],
-                    email: value['user']['email'],
-                    phone: value['user']['phone'],
-                    userName: value['user']['user_name']));
-          })
-        });
     super.initState();
   }
 
@@ -89,7 +52,7 @@ class _AppointementsScreenState extends State<AppointementsScreen> {
       appBar: AppBar(
           title:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text("Hi ${userModel.user.userName}"),
+            Text("Hi ${widget.userName}"),
           ]),
           actions: [
             IconButton(
@@ -102,9 +65,18 @@ class _AppointementsScreenState extends State<AppointementsScreen> {
         padding: const EdgeInsets.all(14),
         child: Column(
           children: List.generate(
-              appointements.length,
+              meals.length,
               (index) => InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MealDetailsPage(
+                                name: meals[index].name,
+                                image: meals[index].image,
+                                description: meals[index].description),
+                          ));
+                    },
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 18),
                       child: Row(
@@ -115,28 +87,24 @@ class _AppointementsScreenState extends State<AppointementsScreen> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 image: DecorationImage(
-                                    image: NetworkImage(
-                                        appointements[index].image),
+                                    image: NetworkImage(meals[index].image),
                                     fit: BoxFit.cover)),
                           ),
                           const SizedBox(width: 10),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(appointements[index].centerName,
+                              Text(meals[index].name,
                                   style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold)),
                               const SizedBox(height: 8),
-                              Text(appointements[index].status,
+                              Text(meals[index].categoryName,
                                   style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold)),
                               const SizedBox(height: 8),
-                              Text(
-                                  appointements[index]
-                                      .appointmentDate
-                                      .toString(),
+                              Text(meals[index].centerName,
                                   style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold)),

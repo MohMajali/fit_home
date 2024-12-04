@@ -1,8 +1,13 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'package:app/Models/category_meal_model.dart';
 import 'package:app/Models/center_model.dart';
 import 'package:app/Models/level_model.dart';
+import 'package:app/Models/meal_model.dart';
+import 'package:app/Models/user_model.dart';
 import 'package:app/Pages/center_component.dart';
 import 'package:app/Pages/level_component.dart';
+import 'package:app/Pages/category_meal_component.dart';
 import 'package:app/constants.dart';
 import 'package:app/main.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +24,30 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<CenterModel> centers = [];
   List<LevelModel> levels = [];
+  List<CategoryMealModel> categories = [];
+
+  UserModel userModel = UserModel(
+      error: false,
+      message: "",
+      user: User(id: 0, name: "", email: "", phone: "", userName: ""));
+
+  Future getUser() async {
+    try {
+      var response = await http.get(
+        Uri.parse('$URL/Get_User_Data.php?user_id=${prefs?.getInt('userId')}'),
+      );
+
+      var userResponse = json.decode(response.body);
+      if (!userResponse['error']) {
+        UserModel.fromJson(userResponse);
+      } else {
+        log("message");
+      }
+      return userResponse;
+    } catch (err) {
+      log('getUser FUNCTION ===> $err');
+    }
+  }
 
   Future<List<CenterModel>> getCenters() async {
     try {
@@ -57,8 +86,40 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<List<CategoryMealModel>> getCategoriesMeals() async {
+    try {
+      var response = await http.get(
+        Uri.parse('$URL/Get_Meals_Categories.php'),
+      );
+
+      // var scootersResponse = json.decode(response.body);
+      List<CategoryMealModel> categories = [];
+
+      categories = categoryMealModelFromJson(response.body);
+
+      return categories;
+    } catch (err) {
+      log('getLevels FUNCTION ===> $err');
+      return [];
+    }
+  }
+
   @override
   void initState() {
+    getUser().then((value) => {
+          setState(() {
+            userModel = UserModel(
+                error: false,
+                message: "",
+                user: User(
+                    id: value['user']['id'],
+                    name: value['user']['name'],
+                    email: value['user']['email'],
+                    phone: value['user']['phone'],
+                    userName: value['user']['user_name']));
+          })
+        });
+
     getCenters().then((value) => {
           setState(() {
             centers = value;
@@ -70,6 +131,12 @@ class _HomePageState extends State<HomePage> {
             levels = value;
           })
         });
+
+    getCategoriesMeals().then((value) => {
+          setState(() {
+            categories = value;
+          })
+        });
     super.initState();
   }
 
@@ -77,12 +144,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Hi "),
-                  Text("Hello", style: Theme.of(context).textTheme.bodySmall)
-                ]),
+            title:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text("Hi ${userModel.user.userName}"),
+              Text("Hello", style: Theme.of(context).textTheme.bodySmall)
+            ]),
             actions: [
               IconButton(
                   onPressed: () {},
@@ -101,11 +167,24 @@ class _HomePageState extends State<HomePage> {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 15),
-              CenterComponent(centers: centers),
+              CenterComponent(
+                centers: centers,
+                userName: userModel.user.userName,
+              ),
               const SizedBox(height: 25),
               Text("Levels", style: Theme.of(context).textTheme.titleLarge),
               const SizedBox(height: 15),
-              LevelComponent(levels: levels)
+              LevelComponent(
+                levels: levels,
+                userName: userModel.user.userName,
+              ),
+              const SizedBox(height: 15),
+              Text("Meals Categories",
+                  style: Theme.of(context).textTheme.titleLarge),
+              CategoryMealComponent(
+                categories: categories,
+                userName: userModel.user.userName,
+              )
             ]));
   }
 }

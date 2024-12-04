@@ -1,28 +1,28 @@
-import 'package:app/Models/level_model.dart';
-import 'package:app/Pages/plans.dart';
+import 'package:app/Models/category_meal_model.dart';
+import 'package:app/Pages/meals.dart';
 import 'package:flutter/material.dart';
 
-class LevelComponent extends StatelessWidget {
-  List<LevelModel> levels;
+class CategoryMealComponent extends StatelessWidget {
+  List<CategoryMealModel> categories;
   String userName;
-  LevelComponent({super.key, required this.levels, required this.userName});
+  CategoryMealComponent(
+      {super.key, required this.categories, required this.userName});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
-        levels.length,
+        categories.length,
         (index) => Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: 10), // Adds horizontal spacing
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: InkWell(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => PlansScreen(
-                    levelId: levels[index].id,
+                  builder: (context) => MealsPage(
+                    categoryName: categories[index].categoryName,
                     userName: userName,
                   ),
                 ),
@@ -41,8 +41,8 @@ class LevelComponent extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 6), // Space between the image and text
-                Text(levels[index].levelName),
+                const SizedBox(height: 10), // Space between image and text
+                Text(categories[index].categoryName),
               ],
             ),
           ),

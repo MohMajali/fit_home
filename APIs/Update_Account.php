@@ -6,16 +6,17 @@ header('Content-Type: application/json; charset=utf-8');
 $response = array();
 
 /*########## RESISTER #########*/
-if (AllParametersAreNotNull(array('user_id', 'name', 'email', 'phone', 'user_name'))) {
+if (AllParametersAreNotNull(array('user_id', 'name', 'email', 'phone', 'user_name', 'password'))) {
 
     $user_id = $_POST['user_id'];
     $name = $_POST['name'];
     $email = $_POST['email'];
     $phone = $_POST['phone'];
     $user_name = $_POST['user_name'];
+    $password = $_POST['password'];
 
-    $stmt = $con->prepare("UPDATE users SET name = ?, email = ?, phone = ?, user_name = ? WHERE id = ?");
-    $stmt->bind_param("ssssi", $name, $email, $phone, $user_name, $user_id);
+    $stmt = $con->prepare("UPDATE users SET name = ?, email = ?, phone = ?, user_name = ?, password = ? WHERE id = ?");
+    $stmt->bind_param("sssssi", $name, $email, $phone, $user_name, $password, $user_id);
 
     if ($stmt->execute()) {
 
