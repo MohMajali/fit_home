@@ -29,14 +29,12 @@ class _BodyState extends State<Body> {
       var userResponse = json.decode(response.body);
 
       if (!userResponse['error']) {
-
         prefs?.setInt('userId', userResponse['user']['id']);
 
         UserModel.fromJson(userResponse);
 
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const MainScreen()));
-            
       } else {
         DangerAlertBox(
             title: "Login Error",
@@ -60,7 +58,7 @@ class _BodyState extends State<Body> {
       Form(
           key: _formKey,
           child: Column(children: [
-            Image.asset("assets/logo.jpeg"),
+            Image.asset("assets/Logo.png", height: 200),
             emailInput(),
             passwordInput(),
             const SizedBox(height: 10),

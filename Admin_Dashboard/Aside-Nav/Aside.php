@@ -53,5 +53,11 @@
 
 
 
+    
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="./Appointements.php">
+        <i class="bi bi-calendar3"></i><span>Appointments</span>
+      </a>
+    </li>
   </ul>
 </aside>

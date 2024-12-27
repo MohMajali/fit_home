@@ -182,7 +182,7 @@ if (isset($_POST['Submit'])) {
                       <div class="col-12">
                         <p class="small mb-0">
                           Don't Have Account
-                          <a href="./Place_Register.php">Signup Now</a>
+                          <a href="./Center_Register.php">Sign up Now</a>
                         </p>
                       </div>
                       <div class="col-12">

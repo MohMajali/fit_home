@@ -28,7 +28,7 @@ if (!$A_ID) {
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <title>Nutrition Centers Subscriptions - FitAtHome</title>
+    <title>Appointements</title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
 
@@ -120,18 +120,16 @@ if (!$A_ID) {
 
     <main id="main" class="main">
       <div class="pagetitle">
-        <h1>Nutrition Centers Subscriptions</h1>
+        <h1>Appointements</h1>
         <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-            <li class="breadcrumb-item">Nutrition Centers Subscriptions</li>
+            <li class="breadcrumb-item">Appointements</li>
           </ol>
         </nav>
       </div>
       <!-- End Page Title -->
       <section class="section">
-
-
 
 
         <div class="row">
@@ -143,45 +141,44 @@ if (!$A_ID) {
                   <thead>
                     <tr>
                       <th scope="col">ID</th>
-                      <th scope="col">Center Name</th>
-                      <th scope="col">Subscription Type</th>
-                      <th scope="col">Start Date</th>
-                      <th scope="col">End Date</th>
-                      <th scope="col">Price</th>
+                      <th scope="col">User name</th>
+                      <th scope="col">Center/Coach Name</th>
+                      <th scope="col">Date</th>
                       <th scope="col">Status</th>
-                      <th scope="col">Created At</th>
                     </tr>
                   </thead>
                   <tbody>
                   <?php
-$sql1 = mysqli_query($con, "SELECT * from nutrition_center_subscriptions ORDER BY id DESC");
+$sql1 = mysqli_query($con, "SELECT * from appointmentes ORDER BY id DESC");
 
 while ($row1 = mysqli_fetch_array($sql1)) {
 
-    $subscription_id = $row1['id'];
-    $nutrition_center_id = $row1['nutrition_center_id'];
-    $subscription_type = $row1['subscription_type'];
-    $start_date = $row1['start_date'];
-    $end_date = $row1['end_date'];
-    $price = $row1['price'];
-    $active = $row1['active'];
+    $appointment_id = $row1['id'];
+    $user_id = $row1['user_id'];
+    $center_id = $row1['center_id'];
+    $appointment_date = $row1['appointment_date'];
     $created_at = $row1['created_at'];
+    $status = $row1['status'];
 
-    $sql2 = mysqli_query($con, "SELECT * from nutrition_centers WHERE id = '$nutrition_center_id'");
+    $sql2 = mysqli_query($con, "SELECT * from users WHERE id = $user_id");
     $row2 = mysqli_fetch_array($sql2);
 
-    $center_name = $row2['name'];
+    $user_name = $row2['user_name'];
+
+    
+    $sql3 = mysqli_query($con, "SELECT * from nutrition_centers WHERE id = $center_id");
+    $row3 = mysqli_fetch_array($sql3);
+
+    $center_name = $row3['name'];
 
     ?>
                     <tr>
-                      <th scope="row"><?php echo $nutrition_center_id ?></th>
-                      <th scope="row"><?php echo $center_name ?></th>
-                      <th scope="row"><?php echo $subscription_type ?></th>
-                      <th scope="row"><?php echo $start_date ?></th>
-                      <th scope="row"><?php echo $end_date ?></th>
-                      <th scope="row"><?php echo $price ?> JOD</th>
-                      <th scope="row"><?php echo $active == 1 ? 'Active' : 'Expired' ?></th>
-                      <th scope="row"><?php echo $created_at ?></th>
+                      <th scope="row"><?php echo $appointment_id ?></th>
+                      <td><?php echo $user_name ?></td>
+                      <td><?php echo $center_name ?></td>
+                      <th scope="row"><?php echo $appointment_date ?></th>
+                      <th scope="row"><?php echo $status ?></th>
+
                     </tr>
 <?php
 }?>
@@ -213,7 +210,7 @@ while ($row1 = mysqli_fetch_array($sql1)) {
 
     <script>
     window.addEventListener('DOMContentLoaded', (event) => {
-     document.querySelector('#sidebar-nav .nav-item:nth-child(5) .nav-link').classList.remove('collapsed')
+     document.querySelector('#sidebar-nav .nav-item:nth-child(9) .nav-link').classList.remove('collapsed')
    });
 </script>
 

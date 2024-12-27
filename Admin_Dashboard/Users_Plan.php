@@ -34,8 +34,8 @@ if (!$A_ID) {
     <meta content="" name="keywords" />
 
     <!-- Favicons -->
-    <link href="../assets/img/Logo.jpg" rel="icon" />
-    <link href="../assets/img/Logo.jpg" rel="apple-touch-icon" />
+    <link href="../assets/img/Logo.png" rel="icon" />
+    <link href="../assets/img/Logo.png" rel="apple-touch-icon" />
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect" />
@@ -68,7 +68,7 @@ if (!$A_ID) {
     <header id="header" class="header fixed-top d-flex align-items-center">
       <div class="d-flex align-items-center justify-content-between">
         <a href="index.php" class="logo d-flex align-items-center">
-          <img src="../assets/img/Logo.jpg" alt="" />
+          <img src="../assets/img/Logo.png" alt="" />
 
         </a>
       </div>

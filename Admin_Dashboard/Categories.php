@@ -24,6 +24,7 @@ if (!$A_ID) {
         $weight_range = $_POST['weight_range'];
         $tall_range = $_POST['tall_range'];
 
+
         $stmt = $con->prepare("INSERT INTO categories (weight_range, tall_range) VALUES (?, ?) ");
 
         $stmt->bind_param("ss", $weight_range, $tall_range);
@@ -52,13 +53,13 @@ if (!$A_ID) {
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <title>Categories - FitAtHome</title>
+    <title>Categories</title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
 
     <!-- Favicons -->
-    <link href="../assets/img/Logo.jpg" rel="icon" />
-    <link href="../assets/img/Logo.jpg" rel="apple-touch-icon" />
+    <link href="../assets/img/Logo.png" rel="icon" />
+    <link href="../assets/img/Logo.png" rel="apple-touch-icon" />
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect" />
@@ -91,7 +92,7 @@ if (!$A_ID) {
     <header id="header" class="header fixed-top d-flex align-items-center">
       <div class="d-flex align-items-center justify-content-between">
         <a href="index.php" class="logo d-flex align-items-center">
-          <img src="../assets/img/Logo.jpg" alt="" />
+          <img src="../assets/img/Logo.png" alt="" />
 
         </a>
       </div>
@@ -161,7 +162,7 @@ if (!$A_ID) {
             data-bs-toggle="modal"
             data-bs-target="#verticalycentered"
           >
-            Add New Category
+            Add Category
           </button>
         </div>
 
@@ -233,7 +234,7 @@ if (!$A_ID) {
                 <table class="table datatable">
                   <thead>
                     <tr>
-                      <th scope="col">ID</th>
+                      <th scope="col">#</th>
                       <th scope="col">Weight Range</th>
                       <th scope="col">Tall Range</th>
                       <th scope="col">Created At</th>
