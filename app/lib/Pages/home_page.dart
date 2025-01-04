@@ -143,7 +143,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: const Color(0xffADE1F7),
         appBar: AppBar(
+            backgroundColor: const Color(0xffADE1F7),
             title:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text("Hi ${userModel.user.userName}"),
@@ -170,6 +172,7 @@ class _HomePageState extends State<HomePage> {
               CenterComponent(
                 centers: centers,
                 userName: userModel.user.userName,
+                userEmail: userModel.user.email,
               ),
               const SizedBox(height: 25),
               Text("Levels", style: Theme.of(context).textTheme.titleLarge),

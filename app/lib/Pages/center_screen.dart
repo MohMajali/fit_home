@@ -5,10 +5,12 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:app/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class CenterScreen extends StatefulWidget {
   final int centerId, userId;
-  final String name, image, description, phone, email, userName;
+  final String name, image, description, phone, email, userName, userEmail;
   const CenterScreen(
       {super.key,
       required this.centerId,
@@ -18,7 +20,8 @@ class CenterScreen extends StatefulWidget {
       required this.phone,
       required this.image,
       required this.description,
-      required this.userName});
+      required this.userName,
+      required this.userEmail});
 
   @override
   State<CenterScreen> createState() => _CenterState();
@@ -27,15 +30,17 @@ class CenterScreen extends StatefulWidget {
 class _CenterState extends State<CenterScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  Future makeAppointement(
-      String date, centerId, userId, BuildContext context) async {
+  Future makeAppointement(String date, centerId, userId, userEmail, coachName,
+      BuildContext context) async {
     try {
-      var response = await http.post(Uri.parse("$URL/Make_Appointement.php"),
-          body: {
-            "user_id": "$userId",
-            "center_id": "$centerId",
-            "appointment_date": date
-          });
+      var response =
+          await http.post(Uri.parse("$URL/Make_Appointement.php"), body: {
+        "user_id": "$userId",
+        "center_id": "$centerId",
+        "appointment_date": date,
+        "user_email": userEmail,
+        "coach": coachName,
+      });
 
       var appResponse = json.decode(response.body);
 
@@ -63,106 +68,127 @@ class _CenterState extends State<CenterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: const Color(0xffADE1F7),
         body: SingleChildScrollView(
             child: Column(children: [
-      const SizedBox(height: 50),
-      Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Stack(children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: const Icon(Icons.arrow_back_ios_new,
-                      color: Colors.black, size: 25)),
-              InkWell(
-                  onTap: () {},
-                  child: const Icon(Icons.more_vert,
-                      color: Colors.black, size: 25))
-            ]),
-            Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          const SizedBox(height: 50),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Stack(children: [
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CircleAvatar(
-                          radius: 150,
-                          backgroundImage: NetworkImage(widget.image)),
-                      const SizedBox(height: 15),
-                      Text(widget.name,
-                          style: const TextStyle(
-                              fontSize: 23,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black)),
-                      const SizedBox(height: 5),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: const BoxDecoration(
-                                    color: Colors.blue, shape: BoxShape.circle),
-                                child: const Icon(Icons.call,
-                                    color: Colors.black, size: 25)),
-                            const SizedBox(width: 20),
-                            Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: const BoxDecoration(
-                                    color: Colors.blue, shape: BoxShape.circle),
-                                child: InkWell(
-                                  onTap: () async {},
-                                  child: const Icon(Icons.chat,
-                                      color: Colors.black, size: 25),
-                                ))
-                          ])
-                    ]))
-          ])),
-      const SizedBox(height: 20),
-      Container(
-          // height: MediaQuery.of(context).size.height / 1.5,
-          width: double.infinity,
-          padding: const EdgeInsets.only(top: 20, right: 15),
-          decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10), topRight: Radius.circular(10))),
-          child: Form(
-              key: _formKey,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10, left: 10),
-                      child: Center(
-                        child: Text(
-                          widget.description,
-                          style: const TextStyle(
-                              color: Colors.black, fontSize: 20),
-                          textAlign: TextAlign.center,
+                      InkWell(
+                          onTap: () => Navigator.pop(context),
+                          child: const Icon(Icons.arrow_back_ios_new,
+                              color: Colors.black, size: 25)),
+                      InkWell(
+                          onTap: () {},
+                          child: const Icon(Icons.more_vert,
+                              color: Colors.black, size: 25))
+                    ]),
+                Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          CircleAvatar(
+                              radius: 150,
+                              backgroundImage: NetworkImage(widget.image)),
+                          const SizedBox(height: 15),
+                          Text(widget.name,
+                              style: const TextStyle(
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black)),
+                          const SizedBox(height: 5),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: const BoxDecoration(
+                                        color: Colors.blue,
+                                        shape: BoxShape.circle),
+                                    child: InkWell(
+                                      onTap: () async {
+                                        await launchUrlString(
+                                            "tel://${widget.phone}");
+                                      },
+                                      child: const Icon(Icons.call,
+                                          color: Colors.black, size: 25),
+                                    )),
+                                const SizedBox(width: 20),
+                                Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: const BoxDecoration(
+                                        color: Colors.blue,
+                                        shape: BoxShape.circle),
+                                    child: InkWell(
+                                      onTap: () async {
+                                        await launchUrlString(
+                                            "sms:+${widget.phone}");
+                                      },
+                                      child: const Icon(Icons.chat,
+                                          color: Colors.black, size: 25),
+                                    ))
+                              ])
+                        ]))
+              ])),
+          const SizedBox(height: 20),
+          Container(
+
+              // height: MediaQuery.of(context).size.height / 1.5,
+              width: double.infinity,
+              padding: const EdgeInsets.only(top: 20, right: 15),
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10))),
+              child: Form(
+                  key: _formKey,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10, left: 10),
+                          child: Center(
+                            child: Text(
+                              widget.description,
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 20),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    dateTimeInput(),
-                    const SizedBox(height: 10),
-                    Center(
-                        child: TextButton(
-                            onPressed: () async {
-                              await makeAppointement(dateTimeCont.text,
-                                  widget.centerId, widget.userId, context);
-                            },
-                            style: ButtonStyle(
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18.0),
-                                        side: const BorderSide(
-                                            color: Colors.black)))),
-                            child: const Text("Make Appointement",
-                                style: TextStyle(color: Colors.black))))
-                  ])))
-    ])));
+                        const SizedBox(height: 10),
+                        dateTimeInput(),
+                        const SizedBox(height: 10),
+                        Center(
+                            child: TextButton(
+                                onPressed: () async {
+                                  await makeAppointement(
+                                      dateTimeCont.text,
+                                      widget.centerId,
+                                      widget.userId,
+                                      widget.userEmail,
+                                      widget.name,
+                                      context);
+                                },
+                                style: ButtonStyle(
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            side: const BorderSide(
+                                                color: Colors.black)))),
+                                child: const Text("Make Appointement",
+                                    style: TextStyle(color: Colors.black))))
+                      ])))
+        ])));
   }
 
   Padding dateTimeInput() {

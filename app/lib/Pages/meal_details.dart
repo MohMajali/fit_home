@@ -17,6 +17,7 @@ class _MealDetailsPageState extends State<MealDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+            backgroundColor: const Color(0xffADE1F7),
       body: SingleChildScrollView(
         child: Column(
           children: [

@@ -6,8 +6,12 @@ import 'package:flutter/widgets.dart';
 
 class CenterComponent extends StatelessWidget {
   List<CenterModel> centers;
-  String userName;
-  CenterComponent({super.key, required this.centers, required this.userName});
+  String userName, userEmail;
+  CenterComponent(
+      {super.key,
+      required this.centers,
+      required this.userName,
+      required this.userEmail});
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +39,7 @@ class CenterComponent extends StatelessWidget {
                           image: centers[index].image,
                           description: centers[index].description,
                           userName: userName,
+                          userEmail: userEmail,
                         ),
                       ),
                     );

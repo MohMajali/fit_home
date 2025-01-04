@@ -34,6 +34,7 @@ class LevelComponent extends StatelessWidget {
                   width: 100,
                   height: 100,
                   decoration: BoxDecoration(
+                    color: const Color(0xffADE1F7),
                     borderRadius: BorderRadius.circular(10),
                     image: const DecorationImage(
                       image: AssetImage("assets/image/levels.png"),

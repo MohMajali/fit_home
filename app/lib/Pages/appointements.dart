@@ -86,7 +86,9 @@ class _AppointementsScreenState extends State<AppointementsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+            backgroundColor: const Color(0xffADE1F7),
       appBar: AppBar(
+            backgroundColor: const Color(0xffADE1F7),
           title:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text("Hi ${userModel.user.userName}"),

@@ -12,6 +12,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: const Color(0xffADE1F7),
         appBar: AppBar(
             title: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
